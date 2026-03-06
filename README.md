@@ -28,8 +28,10 @@ Application: http://localhost:4173
 ## Vérifier OxaPay
 
 - `GET /api/payments/health` doit répondre avec `oxapayConfigured: true`.
-- Depuis l'UI, saisis un montant puis clique **Créer un paiement**.
-- Si tout est correct, tu obtiens un lien OxaPay cliquable.
+- Le front affiche aussi le statut OxaPay au chargement.
+- Depuis l'UI, saisis un montant + devise puis clique **Créer un paiement**.
+- Si tout est correct, tu obtiens un lien OxaPay cliquable + ouverture auto.
+- En cas d'erreur provider, les tentatives backend sont retournées (code HTTP + message) pour debug.
 
 ## Notes
 

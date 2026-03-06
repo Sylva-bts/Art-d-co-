@@ -53,7 +53,7 @@ async function checkPaymentHealth() {
     const data = await response.json();
 
     paymentHealth.textContent = data.oxapayConfigured
-      ? "OxaPay est configuré sur le serveur ✅"
+      ? `OxaPay configuré ✅ (${data.oxapayBaseUrl})`
       : "OxaPay n'est pas configuré sur le serveur ❌";
   } catch (_error) {
     paymentHealth.textContent = "Impossible de vérifier la configuration OxaPay.";
@@ -79,12 +79,17 @@ paymentForm.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (!response.ok || !data.ok) {
-      const providerMessage = data?.provider?.message ? ` (${data.provider.message})` : "";
-      paymentResult.textContent = `Erreur: ${data.message || "paiement non créé"}${providerMessage}`;
+      const attempts = Array.isArray(data.attempts)
+        ? ` Tentatives: ${data.attempts.map((a) => `${a.status}/${a.providerMessage || "n/a"}`).join(" | ")}`
+        : "";
+      paymentResult.textContent = `Erreur: ${data.message || "paiement non créé"}.${attempts}`;
       return;
     }
 
-    paymentResult.innerHTML = `Paiement créé: <a href="${data.payLink}" target="_blank" rel="noopener noreferrer">Ouvrir le lien de paiement</a>`;
+    const details = data.trackId ? ` (Track ID: ${data.trackId})` : "";
+    paymentResult.innerHTML = `Paiement créé${details}: <a href="${data.payLink}" target="_blank" rel="noopener noreferrer">Ouvrir le lien de paiement</a>`;
+
+    window.open(data.payLink, "_blank", "noopener,noreferrer");
   } catch (_error) {
     paymentResult.textContent = "Erreur réseau pendant la création du paiement.";
   } finally {
