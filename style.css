@@ -253,6 +253,19 @@ button:disabled {
   cursor: not-allowed;
 }
 
+
+.redirect-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.redirect-option input {
+  accent-color: #ff2ea6;
+}
+
 #paymentResult a {
   color: #ff87cd;
 }

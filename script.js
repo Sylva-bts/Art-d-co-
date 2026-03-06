@@ -5,6 +5,7 @@ const paymentForm = document.getElementById("paymentForm");
 const paymentSubmit = document.getElementById("paymentSubmit");
 const paymentResult = document.getElementById("paymentResult");
 const paymentHealth = document.getElementById("paymentHealth");
+const autoRedirect = document.getElementById("autoRedirect");
 
 let players = 12450;
 setInterval(() => {
@@ -89,7 +90,10 @@ paymentForm.addEventListener("submit", async (event) => {
     const details = data.trackId ? ` (Track ID: ${data.trackId})` : "";
     paymentResult.innerHTML = `Paiement créé${details}: <a href="${data.payLink}" target="_blank" rel="noopener noreferrer">Ouvrir le lien de paiement</a>`;
 
-    window.open(data.payLink, "_blank", "noopener,noreferrer");
+    if (autoRedirect.checked) {
+      paymentResult.textContent = "Redirection vers la page de paiement OxaPay...";
+      window.location.href = data.payLink;
+    }
   } catch (_error) {
     paymentResult.textContent = "Erreur réseau pendant la création du paiement.";
   } finally {
