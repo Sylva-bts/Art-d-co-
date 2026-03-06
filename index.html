@@ -93,11 +93,25 @@
       <section class="payment container" aria-labelledby="payment-title">
         <h2 id="payment-title">Paiement crypto (OxaPay)</h2>
         <p>Crée une demande de dépôt avec ta clé marchand OxaPay.</p>
+        <p id="paymentHealth" class="muted"></p>
+
         <form id="paymentForm" class="payment-form">
-          <label for="amount">Montant (USD)</label>
-          <input id="amount" name="amount" type="number" min="1" step="0.01" value="20" required />
-          <button type="submit" class="btn btn-primary">Créer un paiement</button>
+          <div>
+            <label for="amount">Montant</label>
+            <input id="amount" name="amount" type="number" min="1" step="0.01" value="20" required />
+          </div>
+
+          <div>
+            <label for="currency">Devise</label>
+            <select id="currency" name="currency">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+
+          <button id="paymentSubmit" type="submit" class="btn btn-primary">Créer un paiement</button>
         </form>
+
         <p id="paymentResult" class="muted"></p>
       </section>
     </main>

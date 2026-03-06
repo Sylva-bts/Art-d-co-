@@ -82,6 +82,35 @@ passport.use(
 
 const app = express();
 
+function normalizePayLink(payload) {
+  return payload?.payLink || payload?.result || payload?.trackId || null;
+}
+
+async function requestOxaPay(payload) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const response = await fetch("https://api.oxapay.com/merchants/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ merchant: OXAPAY_MERCHANT_API_KEY, ...payload }),
+      signal: controller.signal
+    });
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (_error) {
+      data = { message: "Réponse OxaPay illisible." };
+    }
+
+    return { response, data };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 app.use(express.json());
 app.use(
   session({
@@ -138,6 +167,13 @@ app.get("/api/me", (req, res) => {
   });
 });
 
+app.get("/api/payments/health", (_req, res) => {
+  res.json({
+    ok: true,
+    oxapayConfigured: Boolean(OXAPAY_MERCHANT_API_KEY)
+  });
+});
+
 app.post("/api/payments/create", async (req, res) => {
   try {
     if (!OXAPAY_MERCHANT_API_KEY) {
@@ -148,13 +184,20 @@ app.post("/api/payments/create", async (req, res) => {
     }
 
     const amount = Number(req.body.amount);
-    if (!Number.isFinite(amount) || amount <= 0) {
-      return res.status(400).json({ ok: false, message: "Montant invalide." });
+    const currency = typeof req.body.currency === "string" ? req.body.currency.toUpperCase() : "USD";
+    const allowedFiat = new Set(["USD", "EUR"]);
+
+    if (!Number.isFinite(amount) || amount < 1) {
+      return res.status(400).json({ ok: false, message: "Montant invalide (minimum 1)." });
+    }
+
+    if (!allowedFiat.has(currency)) {
+      return res.status(400).json({ ok: false, message: "Devise non supportée." });
     }
 
     const payload = {
-      amount,
-      currency: "USD",
+      amount: Number(amount.toFixed(2)),
+      currency,
       lifeTime: 30,
       feePaidByPayer: 0,
       underPaidCover: 2.5,
@@ -164,33 +207,49 @@ app.post("/api/payments/create", async (req, res) => {
       orderId: `casino-${Date.now()}`
     };
 
-    const response = await fetch("https://api.oxapay.com/merchants/request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        merchant: OXAPAY_MERCHANT_API_KEY,
-        ...payload
-      })
-    });
+    if (req.user?.email) {
+      payload.email = req.user.email;
+    }
 
-    const data = await response.json();
+    const { response, data } = await requestOxaPay(payload);
 
     if (!response.ok) {
-      return res.status(response.status).json({ ok: false, provider: data });
+      return res.status(response.status).json({
+        ok: false,
+        message: data?.message || "La plateforme OxaPay a refusé la requête.",
+        provider: data
+      });
+    }
+
+    const payLink = normalizePayLink(data);
+
+    if (!payLink) {
+      return res.status(502).json({
+        ok: false,
+        message: "OxaPay n'a pas renvoyé de lien de paiement.",
+        provider: data
+      });
     }
 
     return res.json({
       ok: true,
-      payment: data
+      payment: data,
+      payLink
     });
   } catch (error) {
+    if (error.name === "AbortError") {
+      return res.status(504).json({
+        ok: false,
+        message: "Timeout lors de la création du paiement OxaPay."
+      });
+    }
+
     return res.status(500).json({ ok: false, message: error.message });
   }
 });
 
 app.post("/api/payments/callback", (req, res) => {
+  console.log("OxaPay callback:", req.body);
   res.status(200).json({ ok: true });
 });
 

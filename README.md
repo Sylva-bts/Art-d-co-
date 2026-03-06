@@ -25,6 +25,12 @@ npm start
 
 Application: http://localhost:4173
 
+## Vérifier OxaPay
+
+- `GET /api/payments/health` doit répondre avec `oxapayConfigured: true`.
+- Depuis l'UI, saisis un montant puis clique **Créer un paiement**.
+- Si tout est correct, tu obtiens un lien OxaPay cliquable.
+
 ## Notes
 
 - Si `npm install` renvoie `403`, vérifie proxy/réseau/registry npm.

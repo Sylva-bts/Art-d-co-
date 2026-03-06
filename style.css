@@ -238,6 +238,21 @@ h1 {
   min-width: 140px;
 }
 
+
+.payment-form select {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.8rem;
+  min-width: 110px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 #paymentResult a {
   color: #ff87cd;
 }
