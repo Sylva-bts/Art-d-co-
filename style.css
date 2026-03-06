@@ -1,0 +1,278 @@
+:root {
+  --bg: #080510;
+  --bg-alt: #120b24;
+  --primary: #ff2ea6;
+  --secondary: #6d5cff;
+  --text: #f5f5ff;
+  --muted: #bdb9d9;
+  --card: #16102c;
+  --success: #15ffb0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, #1c1040 0%, var(--bg) 65%);
+}
+
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 1.5rem 0 4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-actions form {
+  margin: 0;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.hero-content {
+  margin-top: 4rem;
+  max-width: 700px;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(109, 92, 255, 0.2);
+  border: 1px solid rgba(109, 92, 255, 0.7);
+  color: #d7d1ff;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  margin: 0.8rem 0;
+}
+
+.hero p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  font-family: inherit;
+  border-radius: 0.8rem;
+  padding: 0.7rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--primary), #ff6ad5);
+  color: white;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: var(--text);
+}
+
+.user-panel {
+  margin-top: 1rem;
+}
+
+.profile-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.8rem;
+  padding: 0.6rem 0.8rem;
+}
+
+.profile-card img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.profile-card p,
+.muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: -1.4rem;
+}
+
+.stats article {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.stats h2 {
+  margin: 0;
+  color: var(--success);
+}
+
+.games,
+.bonus,
+.payment {
+  margin-top: 3.2rem;
+}
+
+.section-title p {
+  color: var(--muted);
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.game-card {
+  background: linear-gradient(160deg, #1f1440, var(--card));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.game-card h3 {
+  margin: 0.9rem 0 0.4rem;
+}
+
+.game-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.chip {
+  display: inline-block;
+  font-size: 0.72rem;
+  background: rgba(255, 46, 166, 0.2);
+  color: #ff87cd;
+  border: 1px solid rgba(255, 46, 166, 0.5);
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+}
+
+.btn-card {
+  margin-top: 1rem;
+  width: 100%;
+  background: rgba(109, 92, 255, 0.2);
+  color: #ddd7ff;
+}
+
+.bonus,
+.payment {
+  background: linear-gradient(100deg, #25144a, #170d30);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.2rem;
+}
+
+.bonus {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.payment-form {
+  display: flex;
+  gap: 0.8rem;
+  align-items: end;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.payment-form label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.payment-form input {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.8rem;
+  min-width: 140px;
+}
+
+
+.payment-form select {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.8rem;
+  min-width: 110px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+.redirect-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.redirect-option input {
+  accent-color: #ff2ea6;
+}
+
+#paymentResult a {
+  color: #ff87cd;
+}
+
+.footer {
+  text-align: center;
+  color: #8e87b8;
+  margin: 3.5rem 0 1.5rem;
+  font-size: 0.9rem;
+}
